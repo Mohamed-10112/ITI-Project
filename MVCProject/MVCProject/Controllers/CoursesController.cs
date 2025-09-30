@@ -44,7 +44,7 @@ namespace MVCProject.Controllers
 
         public IActionResult Create()
         {
-            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Id");
+            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Name");
             return View();
         }
 
@@ -58,7 +58,7 @@ namespace MVCProject.Controllers
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Id", course.DeptId);
+            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Name", course.DeptId);
             return View(course);
         }
 
@@ -74,7 +74,7 @@ namespace MVCProject.Controllers
             {
                 return NotFound();
             }
-            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Id", course.DeptId);
+            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Name", course.DeptId);
             return View(course);
         }
 
@@ -107,7 +107,7 @@ namespace MVCProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Id", course.DeptId);
+            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Name", course.DeptId);
             return View(course);
         }
 

@@ -44,7 +44,7 @@ namespace MVCProject.Controllers
 
         public IActionResult Create()
         {
-            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Id");
+            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Name");
             return View();
         }
 
@@ -84,7 +84,7 @@ namespace MVCProject.Controllers
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Id", student.DeptId);
+            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Name", student.DeptId);
             return View(student);
         }
         public IActionResult Edit(int? id)

@@ -45,8 +45,8 @@ namespace MVCProject.Controllers
 
         public IActionResult Create()
         {
-            ViewData["CrsId"] = new SelectList(_context.Courses, "Id", "Id");
-            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Id");
+            ViewData["CrsId"] = new SelectList(_context.Courses, "Id", "Name");
+            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Name");
             return View();
         }
 
@@ -60,8 +60,8 @@ namespace MVCProject.Controllers
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CrsId"] = new SelectList(_context.Courses, "Id", "Id", instructor.CrsId);
-            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Id", instructor.DeptId);
+            ViewData["CrsId"] = new SelectList(_context.Courses, "Id", "Name", instructor.CrsId);
+            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Name", instructor.DeptId);
             return View(instructor);
         }
 
@@ -77,8 +77,8 @@ namespace MVCProject.Controllers
             {
                 return NotFound();
             }
-            ViewData["CrsId"] = new SelectList(_context.Courses, "Id", "Id", instructor.CrsId);
-            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Id", instructor.DeptId);
+            ViewData["CrsId"] = new SelectList(_context.Courses, "Id", "Name", instructor.CrsId);
+            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Name", instructor.DeptId);
             return View(instructor);
         }
 
@@ -111,8 +111,8 @@ namespace MVCProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CrsId"] = new SelectList(_context.Courses, "Id", "Id", instructor.CrsId);
-            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Id", instructor.DeptId);
+            ViewData["CrsId"] = new SelectList(_context.Courses, "Id", "Name", instructor.CrsId);
+            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Name", instructor.DeptId);
             return View(instructor);
         }
 
