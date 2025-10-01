@@ -18,10 +18,24 @@ namespace MVCProject.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string searchString)
         {
-            var appDbContext = _context.Students.Include(s => s.Department).ToList();
-            return View(appDbContext);
+            //var appDbContext = _context.Students.Include(s => s.Department).ToList();
+            //return View(appDbContext);
+            var students = _context.Students
+                .Include(s => s.Department)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(searchString))
+            {
+                var q = searchString.Trim().ToLower();
+                students = students.Where(s =>
+                    s.Name.ToLower().Contains(q) ||                   
+                    (s.Department != null && s.Department.Name.ToLower() == q)
+                );
+            }
+
+            return View(students.ToList());
         }
 
         public IActionResult Details(int? id)
@@ -77,7 +91,7 @@ namespace MVCProject.Controllers
                 }
                 else
                 {
-                    student.Image = null;
+                    student.Image = "default.jpg";
                 }
 
                 _context.Add(student);
@@ -112,6 +126,7 @@ namespace MVCProject.Controllers
                 return NotFound();
 
             ModelState.Remove("Image");
+            ModelState.Remove("ImageFile");
             ModelState.Remove("Department");
 
             if (ModelState.IsValid)

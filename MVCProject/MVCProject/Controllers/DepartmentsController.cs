@@ -18,10 +18,18 @@ namespace MVCProject.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string searchString)
         {
-            var departments = _context.Departments.ToList();
-            return View(departments);
+            var departments = _context.Departments.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                departments = departments.Where(d =>
+                    d.Name.Contains(searchString) ||
+                    d.ManagerName.Contains(searchString));
+            }
+
+            return View(departments.ToList());
         }
 
         public IActionResult Details(int id)

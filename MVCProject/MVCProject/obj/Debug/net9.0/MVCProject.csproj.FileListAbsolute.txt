@@ -259,7 +259,6 @@ D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\rjsmcshtml.ds
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\scopedcss\bundle\MVCProject.styles.css
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\scopedcss\projectbundle\MVCProject.bundle.scp.css
-D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\compressed\37pk7gzr4g-b9sayid5wm.gz
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\compressed\888dk6c793-61n19gt1b8.gz
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\compressed\svh0abgfmk-xtxxf3hu2r.gz
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\compressed\rhfl17arf0-bqjiyaj88i.gz
@@ -338,3 +337,4 @@ D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\MVCProject.dl
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\MVCProject.pdb
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\MVCProject.genruntimeconfig.cache
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\ref\MVCProject.dll
+D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\compressed\37pk7gzr4g-6peti4zmjg.gz

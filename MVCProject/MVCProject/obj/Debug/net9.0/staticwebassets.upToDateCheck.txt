@@ -1,6 +1,10 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\students\6485bc43-3023-4372-9baf-bfb55ace56fa.jpg
 wwwroot\images\students\a3cad076-f78a-47b7-bc5e-ac535ecd93ba.jpg
+wwwroot\images\students\af474b26-2d51-4c73-9812-a27485d89744.jpg
+wwwroot\images\students\default.jpg
+wwwroot\images\students\fb30a912-4ae7-44cf-a517-b66ef0d78522.jpg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
