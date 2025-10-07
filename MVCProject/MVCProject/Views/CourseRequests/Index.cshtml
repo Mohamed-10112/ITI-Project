@@ -1,0 +1,105 @@
+﻿@model IEnumerable<MVCProject.Models.CourseRequest>
+
+@{
+    ViewData["Title"] = "Course Requests";
+}
+
+<div class="container mt-5 p-4 rounded-4 bg-white">
+    <h1 class="mb-4 text-center">Course Requests</h1>
+
+    <div class="table-responsive">
+        <table class="table table-striped align-middle text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Student</th>
+                    <th>Course</th>
+                    <th>Request Date</th>
+                    <th>Status</th>
+                    <th style="width: 240px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Student?.Name</td>
+                        <td>@item.Course?.Name</td>
+                        <td>@item.RequestDate.ToShortDateString()</td>
+                        <td>@item.Status</td>
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                @if (item.Status == "Pending")
+                                {
+                                    <form asp-action="Approve" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <button type="submit" class="btn btn-warning btn-sm me-2">Accept</button>
+                                    </form>
+                                    <form asp-action="Reject" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <button type="submit" class="btn custom-details2 btn-sm">Reject</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">@item.Status</span>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f6f8fb;
+    }
+
+    h1 {
+        font-weight: 700;
+        background: linear-gradient(90deg, #001f3f, #0a3d91);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .container.mt-5 {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        padding: 40px;
+        margin-top: 40px !important;
+    }
+
+    .btn {
+        transition: all 0.2s ease-in-out;
+        border-radius: 8px !important;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+    }
+
+    .table {
+        border-radius: 12px !important;
+        overflow: hidden;
+    }
+
+    .table tbody tr {
+        transition: none !important;
+    }
+
+    .table tbody tr:hover {
+        background-color: inherit !important;
+        transform: none !important;
+    }
+
+    @@media (max-width: 576px) {
+        .table-responsive {
+            padding: 0 8px;
+        }
+    }
+</style>
+

@@ -1,8 +1,574 @@
-﻿@{
+﻿@model MVCProject.ViewModels.HomePageViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="home-background">
+    <div class="overlay"></div>
+    <div class="content">
+        <div class="text-container">
+            <h1 class="main-headline">YOUR ACADEMIC GATEWAY</h1>
+            <p class="description">
+                Access your profile, explore departments, and stay updated with available courses.
+            </p>
+
+            <a href="javascript:void(0)" class="login-button" onclick="openLoginModal()">Login</a>
+        </div>
+
+        <div class="image-container">
+            <img src="/images/Home/on.png" alt="Academic illustration" class="side-image">
+            <div class="image-border"></div>
+        </div>
+    </div>
 </div>
+
+<!-- Login Modal -->
+<div id="loginModal" class="modal-overlay">
+    <div class="modal-container">
+        <div class="login-left">
+            <div class="welcome-text">
+                <h1>Welcome Back 👋</h1>
+                <p>Sign in to continue your learning journey and access your courses.</p>
+            </div>
+        </div>
+
+        <div class="login-right">
+            <div class="login-card">
+                <button type="button" class="close-btn" onclick="closeLoginModal()">&times;</button>
+                <h2 class="login-title">· Login Form ·</h2>
+
+                <form asp-action="SaveLogin" asp-controller="Account" method="post">
+                    <div class="form-group-custom">
+                        <label asp-for="Login.Email" class="form-label-custom">Email address</label>
+                        <input asp-for="Login.Email" class="form-control-custom" type="email" />
+                        <span asp-validation-for="Login.Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label asp-for="Login.Password" class="form-label-custom">Password</label>
+                        <input asp-for="Login.Password" class="form-control-custom" type="password" />
+                        <span asp-validation-for="Login.Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="checkbox-container">
+                        <input asp-for="Login.RememberMe" class="checkbox-custom" />
+                        <label class="checkbox-label">Remember Me</label>
+                    </div>
+
+                    <button type="submit" class="btn-submit">LOGIN</button>
+                    <div class="signup-link"> Don't have an account? <a href="javascript:void(0)" onclick="switchToRegister()">Sign up</a> </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Register Modal -->
+<div id="registerModal" class="modal-overlay register-modal">
+    <div class="modal-container">
+        <div class="login-left">
+            <div class="welcome-text">
+                <h1>Join Us Today 🎓</h1>
+                <p>Create an account and start exploring courses designed for your success.</p>
+            </div>
+        </div>
+
+        <div class="login-right">
+            <div class="login-card">
+                <button type="button" class="close-btn" onclick="closeRegisterModal()">&times;</button>
+                <h2 class="login-title">· Registration Form ·</h2>
+
+                <form asp-action="SaveRegister" asp-controller="Account" method="post">
+                    <div class="form-group-custom">
+                        <label asp-for="Register.FirstName" class="form-label-custom">First Name</label>
+                        <input asp-for="Register.FirstName" class="form-control-custom" />
+                        <span asp-validation-for="Register.FirstName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label asp-for="Register.LastName" class="form-label-custom">Last Name</label>
+                        <input asp-for="Register.LastName" class="form-control-custom" />
+                        <span asp-validation-for="Register.LastName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label asp-for="Register.Email" class="form-label-custom">Email address</label>
+                        <input asp-for="Register.Email" class="form-control-custom" type="email" />
+                        <span asp-validation-for="Register.Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label asp-for="Register.Password" class="form-label-custom">Password</label>
+                        <input asp-for="Register.Password" class="form-control-custom" type="password" />
+                        <span asp-validation-for="Register.Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label asp-for="Register.ConfirmPassword" class="form-label-custom">Confirm Password</label>
+                        <input asp-for="Register.ConfirmPassword" class="form-control-custom" type="password" />
+                        <span asp-validation-for="Register.ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="terms" name="terms" class="checkbox-custom" />
+                        <label for="terms" class="checkbox-label">
+                            I agree to the terms and conditions and privacy policy
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-submit">CREATE ACCOUNT</button>
+
+                    <div class="signup-link">
+                        Already have an account?
+                        <a href="javascript:void(0)" onclick="switchToLogin()">Sign in</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    main {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    footer {
+        display: none !important;
+    }
+
+    .home-background {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        background: url('/images/Home/H5.png') no-repeat center center fixed;
+        background-size: cover;
+        overflow: hidden;
+    }
+
+    .home-background * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .home-background .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    .home-background .content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        height: 100%;
+        padding: 0 80px;
+        margin-top: -80px;
+    }
+
+    .text-container {
+        max-width: 600px;
+        text-align: left;
+        flex: 0 0 auto;
+        margin-right: 20px;
+        margin-top: 80px;
+        margin-left: 20px;
+        margin-bottom: 20px;
+    }
+
+    .image-container {
+        position: relative;
+        flex: 0 0 auto;
+        width: 800px;
+        margin-left: 100px;
+        margin-top: 100px;
+    }
+
+    .image-border {
+        position: absolute;
+        left: 100px;
+        bottom: 100px;
+        width: 530px;
+        height: 330px;
+        background-color: #FF8C00;
+        z-index: -1;
+    }
+
+    .side-image {
+        position: relative;
+        width: 600px;
+        height: 400px;
+        object-fit: cover;
+        z-index: 1;
+    }
+
+    .main-headline {
+        font-size: 4.5rem;
+        font-weight: 700;
+        color: white;
+        line-height: 1.1;
+        margin-bottom: 30px;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        letter-spacing: 2px;
+    }
+
+    .description {
+        font-size: 1.4rem;
+        color: white;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+        font-weight: 300;
+    }
+
+    .login-button {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 15px 40px;
+        background-color: #FF8C00;
+        color: white;
+        font-size: 1.2rem;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .login-button:hover {
+        background-color: #FF8C00;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .modal-container {
+        display: flex;
+        width: 900px;
+        height: 600px;
+        background: transparent;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        animation: slideIn 0.4s ease-out;
+    }
+
+    .login-left {
+        flex: 1;
+        background-color: #00264d;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-align: left;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+        overflow: hidden;
+    }
+
+    .left-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('/images/Home/on.png') no-repeat center center;
+        background-size: cover;
+        opacity: 0.25;
+    }
+
+    .welcome-text h1 {
+        font-size: 2.3rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .welcome-text p {
+        font-size: 1.1rem;
+        color: #d1e0ff;
+        max-width: 280px;
+        line-height: 1.6;
+    }
+
+    .login-right {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        position: relative;
+        height: 100%;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+    }
+
+    .login-card {
+        width: 80%;
+        position: relative;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background: none;
+        border: none;
+        font-size: 30px;
+        color: #1a2332;
+        cursor: pointer;
+        line-height: 1;
+    }
+
+    .login-title {
+        color: #001f3f;
+        font-size: 30px;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 25px;
+        letter-spacing: 1px;
+    }
+
+    .form-group-custom {
+        margin-bottom: 15px;
+        position: relative;
+    }
+
+    .form-label-custom {
+        color: black;
+        font-size: 17px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .form-control-custom {
+        width: 100%;
+        padding: 14px 0;
+        background: transparent;
+        border: none;
+        border-bottom: 2px solid rgba(100, 100, 100, 0.5);
+        color: black;
+        font-size: 17px;
+        transition: border-color 0.3s;
+    }
+
+    .form-control-custom:focus {
+        outline: none;
+        border-bottom-color: black;
+    }
+
+    .text-danger {
+        color: red !important;
+        font-size: 13px;
+        display: block;
+        min-height: 1px;
+        margin-top: 3px;
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 16px;
+        background: #001f3f;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-size: 17px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        margin-top: 10px;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .signup-link {
+        text-align: center;
+        margin-top: 20px;
+        color: black;
+        font-size: 15px;
+    }
+
+    .signup-link a {
+        color: #1a2332;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .signup-link a:hover {
+        text-decoration: underline;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @@keyframes slideIn {
+        from {
+            transform: translateY(-30px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .register-modal .form-group-custom {
+        margin-bottom: 5px;
+    }
+
+    .register-modal .form-label-custom {
+        margin-bottom: 2px;
+        font-size: 12px;
+    }
+
+    .register-modal .form-control-custom {
+        padding: 4px 0;
+        font-size: 13px;
+    }
+
+    .register-modal .text-danger {
+        margin-top: 1px;
+        font-size: 11px;
+    }
+
+    .register-modal .btn-submit {
+        margin-top: 4px; 
+        padding: 6px; 
+        font-size: 13px; 
+    }
+
+    .register-modal .signup-link {
+        margin-top: 5px; 
+        font-size: 11.5px;
+    }
+
+    @@keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-6px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+</style>
+
+@section Scripts {
+    <script>
+        function openLoginModal() { document.getElementById("loginModal").style.display = "flex"; }
+        function closeLoginModal() { document.getElementById("loginModal").style.display = "none"; }
+        function openRegisterModal() { document.getElementById("registerModal").style.display = "flex"; }
+        function closeRegisterModal() { document.getElementById("registerModal").style.display = "none"; }
+        function switchToRegister() { closeLoginModal(); openRegisterModal(); }
+        function switchToLogin() { closeRegisterModal(); openLoginModal(); }
+
+        window.onclick = function (event) {
+            const loginModal = document.getElementById("loginModal");
+            const registerModal = document.getElementById("registerModal");
+            if (event.target === loginModal) loginModal.style.display = "none";
+            if (event.target === registerModal) registerModal.style.display = "none";
+        };
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var showLogin = @Json.Serialize(ViewBag.ShowLogin ?? false);
+            var showRegister = @Json.Serialize(ViewBag.ShowRegister ?? false);
+
+            var loginEmail = '@(ViewBag.LoginEmail ?? "")'.trim();
+            var regEmail = '@(ViewBag.RegisterEmail ?? "")'.trim();
+            var regFirst = '@(ViewBag.RegisterFirstName ?? "")'.trim();
+            var regLast = '@(ViewBag.RegisterLastName ?? "")'.trim();
+
+            var errorMessage = '@(ViewBag.ErrorMessage ?? "")';
+            var successMessage = '@(ViewBag.SuccessMessage ?? "")';
+
+            if (successMessage && successMessage.trim() !== '') {
+                alert(successMessage);
+            }
+
+            if (showRegister === true) {
+                openRegisterModal();
+            } else if (showLogin === true) {
+                openLoginModal();
+            }
+
+            if (loginEmail) {
+                setTimeout(function () {
+                    var loginInput = document.querySelector('#loginModal input[name="Login.Email"]') || document.querySelector('#loginModal input[name="Email"]');
+                    if (loginInput) loginInput.value = loginEmail;
+                }, 120);
+            }
+
+            if (regEmail || regFirst || regLast) {
+                setTimeout(function () {
+                    var rEmail = document.querySelector('#registerModal input[name="Register.Email"]') || document.querySelector('#registerModal input[name="Email"]');
+                    var rFirst = document.querySelector('#registerModal input[name="Register.FirstName"]') || document.querySelector('#registerModal input[name="FirstName"]');
+                    var rLast = document.querySelector('#registerModal input[name="Register.LastName"]') || document.querySelector('#registerModal input[name="LastName"]');
+
+                    if (rEmail && regEmail) rEmail.value = regEmail;
+                    if (rFirst && regFirst) rFirst.value = regFirst;
+                    if (rLast && regLast) rLast.value = regLast;
+                }, 140);
+            }
+
+            if (errorMessage && errorMessage.trim() !== '') {
+                setTimeout(function () {
+                    var targetForm = showRegister === true ? document.querySelector('#registerModal form') : document.querySelector('#loginModal form');
+                    if (!targetForm) targetForm = document.querySelector('#loginModal form') || document.querySelector('#registerModal form');
+                    if (targetForm && !document.getElementById('popupErrorMessage')) {
+                        var errorDiv = document.createElement('div');
+                        errorDiv.id = 'popupErrorMessage';
+                        errorDiv.style.cssText = 'padding: 10px; margin-bottom: 15px; border-radius: 5px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; text-align: center; font-weight: 500;';
+                        errorDiv.textContent = errorMessage;
+                        targetForm.insertBefore(errorDiv, targetForm.firstChild);
+                    }
+                }, 200);
+            }
+        });
+    </script>
+
+    <partial name="_ValidationScriptsPartial" />
+}

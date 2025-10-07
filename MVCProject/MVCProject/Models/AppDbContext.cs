@@ -1,20 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace MVCProject.Models
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
         public AppDbContext() { }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
-
+        
         public DbSet<Department> Departments { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Instructor> Instructors { get; set; }
         public DbSet<CourseStudents> CourseStudents { get; set; }
+        public DbSet<CourseRequest> CourseRequests { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -63,6 +66,19 @@ namespace MVCProject.Models
                 .WithMany(s => s.CourseStudents)
                 .HasForeignKey(cs => cs.StdId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Student>()
+                .HasOne(s => s.User)
+                .WithOne(u => u.StudentProfile)
+                .HasForeignKey<Student>(s => s.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Instructor>()
+                .HasOne(i => i.User)
+                .WithOne(u => u.InstructorProfile)
+                .HasForeignKey<Instructor>(i => i.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

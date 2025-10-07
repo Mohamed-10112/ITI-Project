@@ -1,0 +1,105 @@
+﻿@model IEnumerable<MVCProject.Models.Course>
+
+@{
+    ViewData["Title"] = "Available Courses";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Available Courses</h2>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-info text-center">@TempData["Message"]</div>
+    }
+
+    @if (!Model.Any())
+    {
+        <p class="text-center text-muted">No available courses found.</p>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach (var course in Model)
+            {
+                <div class="col">
+                    <div class="card shadow h-100 border-0 rounded-3 course-card @(ViewBag.PendingRequests.Contains(course.Id) ? "selected" : "")" data-course-id="@course.Id">
+                        <div class="card-body text-center">
+                            <h5 class="card-title fw-bold mb-3 text-darkblue">@course.Name</h5>
+                            <p class="card-text mb-1"><strong>Credit Hours:</strong> @course.Hours</p>
+                            <p class="card-text mb-1"><strong>Department:</strong> @course.Department?.Name</p>
+                            <p class="card-text mb-3"><strong>Minimum Degree:</strong> @course.MinimumDegree</p>
+
+                            <form asp-action="RequestCourse" method="post" class="select-course-form">
+                                <input type="hidden" name="courseId" value="@course.Id" />
+                                <button type="submit" class="select-btn w-100">Select</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<style>
+    .text-darkblue {
+        color: #0a3d91;
+    }
+
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .course-card.selected {
+        border: 3px solid #0a3d91 !important;
+    }
+
+    .select-btn {
+        background-color: white;
+        color: #0a3d91;
+        border: 2px solid #0a3d91;
+        border-radius: 6px;
+        padding: 10px 0;
+        font-weight: 600;
+        font-size: 16px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .select-btn:hover {
+        background-color: #001f3f;
+        color: white;
+    }
+
+    h2 {
+        font-weight: 600;
+        color: #001f3f;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const forms = document.querySelectorAll(".select-course-form");
+
+        forms.forEach(form => {
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+
+                document.querySelectorAll(".course-card").forEach(card => {
+                    card.classList.remove("selected");
+                });
+
+                const card = form.closest(".course-card");
+                card.classList.add("selected");
+
+                setTimeout(() => {
+                    form.submit();
+                }, 300);
+            });
+        });
+    });
+</script>

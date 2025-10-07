@@ -1,0 +1,51 @@
+﻿@model IEnumerable<dynamic>
+
+@{
+    ViewData["Title"] = "Grades";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Grades</h2>
+
+    @if (!Model.Any())
+    {
+        <p class="text-center text-muted">You are not enrolled in any courses yet.</p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Course Name</th>
+                        <th>Credit Hours</th>
+                        <th>Grade</th>
+                        <th>Max Degree</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var course in Model)
+                    {
+                        <tr>
+                            <td>@course.CourseName</td>
+                            <td>@course.Hours</td>
+                            <td>@course.StudentDegree</td>
+                            <td>@course.CourseDegree</td>
+                            <td>
+                                @if (course.Status == "Passed")
+                                {
+                                    <span class="badge bg-success">Passed</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Failed</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

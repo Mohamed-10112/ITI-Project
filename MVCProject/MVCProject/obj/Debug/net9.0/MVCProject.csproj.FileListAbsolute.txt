@@ -3,9 +3,16 @@ D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\appsettings.j
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\MVCProject.staticwebassets.runtime.json
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\MVCProject.staticwebassets.endpoints.json
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\MVCProject.exe
+D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\MVCProject.deps.json
+D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\MVCProject.runtimeconfig.json
+D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\MVCProject.dll
+D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\MVCProject.pdb
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\Azure.Core.dll
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\Azure.Identity.dll
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\Humanizer.dll
+D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\Microsoft.AspNetCore.Razor.Language.dll
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\Microsoft.Bcl.AsyncInterfaces.dll
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\Microsoft.Build.dll
@@ -37,6 +44,8 @@ D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\Microsoft.Ext
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.dll
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\Microsoft.Extensions.DependencyModel.dll
+D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\Microsoft.Extensions.Identity.Core.dll
+D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\Microsoft.Extensions.Identity.Stores.dll
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\Microsoft.Extensions.Logging.dll
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\Microsoft.Extensions.Logging.Abstractions.dll
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\Microsoft.Extensions.Options.dll
@@ -259,6 +268,7 @@ D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\rjsmcshtml.ds
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\scopedcss\bundle\MVCProject.styles.css
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\scopedcss\projectbundle\MVCProject.bundle.scp.css
+D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\compressed\37pk7gzr4g-qftitbfzmq.gz
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\compressed\888dk6c793-61n19gt1b8.gz
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\compressed\svh0abgfmk-xtxxf3hu2r.gz
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\compressed\rhfl17arf0-bqjiyaj88i.gz
@@ -331,10 +341,5 @@ D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\MVCProject.cs
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\MVCProject.dll
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\refint\MVCProject.dll
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\MVCProject.pdb
-D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\MVCProject.deps.json
-D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\MVCProject.runtimeconfig.json
-D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\MVCProject.dll
-D:\All_Projects\ITI-Project\MVCProject\MVCProject\bin\Debug\net9.0\MVCProject.pdb
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\MVCProject.genruntimeconfig.cache
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\ref\MVCProject.dll
-D:\All_Projects\ITI-Project\MVCProject\MVCProject\obj\Debug\net9.0\compressed\37pk7gzr4g-6peti4zmjg.gz

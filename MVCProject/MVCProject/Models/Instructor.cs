@@ -1,4 +1,6 @@
-﻿namespace MVCProject.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace MVCProject.Models
 {
     public class Instructor
     {
@@ -13,5 +15,9 @@
 
         public int CrsId { get; set; }
         public virtual Course Course { get; set; }
+
+        [ForeignKey("User")]
+        public string? UserId { get; set; } 
+        public virtual ApplicationUser User { get; set; }
     }
 }

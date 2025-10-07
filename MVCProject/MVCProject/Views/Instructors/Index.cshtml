@@ -1,75 +1,217 @@
 ﻿@model IEnumerable<MVCProject.Models.Instructor>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Instructors";
 }
-<div style="margin-left:130px;">
-    <h1>Instructors</h1>
-    <form asp-action="Index" method="get" class="mb-3">
-        <input type="text" name="searchString"
-               class="form-control d-inline"
-               style="width: 895px;"
-               placeholder="Search by name or department..."
-               value="@Context.Request.Query["searchString"]" />
 
-        <button type="submit" class="btn custom-details btn-sm mx-1">Search</button>
-        <a asp-action="Index" class="btn btn-secondary btn-sm mx-1" style="width:57px;">Reset</a>
-    </form>
-    <p>
-        <a asp-action="Create">Add Instructors</a>
-    </p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Salary)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Address)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Image)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Department)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Course)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-    @foreach (var item in Model) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Salary)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Image)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Department.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Course.Name)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm mx-1">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn custom-details btn-sm mx-1">Details</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn custom-details2 btn-sm mx-1">Delete</a>
-                </td>
-            </tr>
-    }
-        </tbody>
-    </table>
+<div class="container mt-5 p-4 rounded-4 bg-white">
+    <h1 class="mb-4 text-center">Instructors</h1>
+
+    <div class="search-container mb-4">
+        <input type="text"
+               id="searchInput"
+               class="form-control search-input"
+               placeholder="Search by name, department, or course..."
+               aria-label="Search" />
+
+        <button type="button" class="search-icon" aria-hidden="true" title="Search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                 xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M21 21L16.65 16.65"
+                      stroke="#0a3d91" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="11" cy="11" r="6"
+                        stroke="#0a3d91" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </button>
+    </div>
+
+    <div class="mb-3 text-center">
+        <a asp-action="Create" class="btn btn-warning px-4 py-2 fw-semibold">Add Instructor</a>
+    </div>
+
+    <div class="table-responsive" id="instructorsTable">
+        <table class="table table-striped align-middle text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.Image)</th>
+                    <th>@Html.DisplayNameFor(model => model.Salary)</th>
+                    <th>@Html.DisplayNameFor(model => model.Address)</th>
+                    <th>@Html.DisplayNameFor(model => model.Department)</th>
+                    <th>@Html.DisplayNameFor(model => model.Course)</th>
+                    <th style="width: 240px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td data-col="name">@item.Name</td>
+                        <td>
+                            <img src="~/images/@(string.IsNullOrEmpty(item.Image)
+                                                                              ? "students/default.jpg"
+                                                                              : $"instructors/{item.Image}")"
+                             alt="@item.Name"
+                             width="80" height="80"
+                             class="student-img" />
+                        </td>
+                        <td data-col="salary">@item.Salary</td>
+                        <td data-col="address">@item.Address</td>
+                        <td data-col="department">@item.Department?.Name</td>
+                        <td data-col="course">@item.Course?.Name</td>
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm me-2">Edit</a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn custom-details btn-sm me-2">Details</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn custom-details2 btn-sm">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
+
+<style>
+    body {
+        background-color: #f6f8fb;
+    }
+
+    h1 {
+        font-weight: 700;
+        background: linear-gradient(90deg, #001f3f, #0a3d91);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .student-img {
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #fff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        transition: transform 0.25s ease;
+    }
+
+    .student-img:hover {
+        transform: scale(1.08);
+    }
+
+    .container.mt-5 {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        padding: 40px;
+        margin-top: 40px !important;
+    }
+
+    .search-container {
+        position: relative;
+        width: 100%;
+        max-width: 680px;
+        margin: 0 auto;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 12px 48px 12px 16px;
+        border: 2px solid #0a3d91;
+        border-radius: 50px;
+        font-size: 16px;
+        transition: all 0.18s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: #001f3f;
+        box-shadow: 0 6px 18px rgba(0, 31, 63, 0.12);
+    }
+
+    .search-icon {
+        position: absolute;
+        top: 50%;
+        right: 14px;
+        transform: translateY(-50%);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn {
+        transition: all 0.2s ease-in-out;
+        border-radius: 8px !important;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+    }
+
+    .table {
+        border-radius: 12px !important;
+        overflow: hidden;
+    }
+    .table tbody tr {
+        transition: none !important;
+    }
+
+    .table tbody tr:hover {
+        background-color: inherit !important;
+        transform: none !important;
+    }
+
+    @@media (max-width: 576px) {
+        .search-container {
+            max-width: 100%;
+            padding: 0 8px;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const input = document.getElementById("searchInput");
+        const iconBtn = document.querySelector(".search-icon");
+        const table = document.querySelector("#instructorsTable table");
+        const tbody = table.querySelector("tbody");
+        const allRows = Array.from(tbody.querySelectorAll("tr"));
+
+        if (iconBtn) {
+            iconBtn.addEventListener("click", function () {
+                input.focus();
+            });
+        }
+
+        let timeoutId = null;
+        input.addEventListener("input", function () {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                const q = input.value.trim().toLowerCase();
+
+                if (!q) {
+                    tbody.innerHTML = "";
+                    allRows.forEach(r => tbody.appendChild(r));
+                    return;
+                }
+
+                const filtered = allRows.filter(row => {
+                    const name = (row.querySelector('[data-col="name"]')?.textContent || "").toLowerCase();
+                    const dept = (row.querySelector('[data-col="department"]')?.textContent || "").toLowerCase();
+                    const addr = (row.querySelector('[data-col="address"]')?.textContent || "").toLowerCase();
+                    const course = (row.querySelector('[data-col="course"]')?.textContent || "").toLowerCase();
+                    const salary = (row.querySelector('[data-col="salary"]')?.textContent || "").toLowerCase();
+                    return name.includes(q) || dept.includes(q) || addr.includes(q) || course.includes(q) || salary.includes(q);
+                });
+
+                tbody.innerHTML = "";
+                filtered.forEach(r => tbody.appendChild(r));
+            }, 120);
+        });
+    });
+</script>

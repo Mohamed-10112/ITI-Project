@@ -10,5 +10,8 @@
 
         public int StdId { get; set; }
         public virtual Student Student { get; set; }
+
+        public bool IsCompleted { get; set; } = false;
+
     }
 }

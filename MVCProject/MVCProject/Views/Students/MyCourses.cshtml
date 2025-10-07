@@ -1,0 +1,61 @@
+﻿@model IEnumerable<dynamic>
+
+@{
+    ViewData["Title"] = "My Courses";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">My Courses</h2>
+
+    @if (!Model.Any())
+    {
+        <p class="text-center text-muted">You are not enrolled in any courses yet.</p>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach (var course in Model)
+            {
+                <div class="col">
+                    <div class="card shadow h-100 border-0 rounded-3">
+                        <div class="card-body text-center">
+                            <h5 class="card-title fw-bold mb-3 text-darkblue">@course.CourseName</h5>
+                            <p class="card-text mb-1">
+                                <strong>Credit Hours:</strong> @course.Hours
+                            </p>
+                            <p class="card-text mb-1">
+                                <strong>Department:</strong> @course.Department
+                            </p>
+                            <p class="card-text">
+                                <strong>Instructor:</strong> @course.Instructor
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<style>
+    .text-darkblue {
+        color: #0a3d91;
+    }
+
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    h2 {
+        font-weight: 600;
+        color: #001f3f;
+    }
+</style>
+
+
+

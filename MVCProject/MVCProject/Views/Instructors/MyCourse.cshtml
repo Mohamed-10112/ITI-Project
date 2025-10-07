@@ -1,0 +1,60 @@
+﻿@model MVCProject.Models.Instructor
+
+@{
+    ViewData["Title"] = "My Course";
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">@Model.Course.Name</h1>
+
+    @if (Model.Course.CourseStudents == null || !Model.Course.CourseStudents.Any())
+    {
+        <p class="text-center text-muted">No students registered in this course.</p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Image</th>
+                        <th>Email</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cs in Model.Course.CourseStudents)
+                    {
+                        <tr>
+                            <td>@cs.Student.Name</td>
+                            <td>
+                                <img src="~/images/students/@(string.IsNullOrEmpty(cs.Student.Image) ? "default.jpg" : cs.Student.Image)"
+                                     alt="@cs.Student.Name"
+                                     width="80" height="80"
+                                     style="border-radius:50%; object-fit:cover;" />
+                            </td>
+                            <td>@cs.Student.User?.Email</td>
+                            <td>
+                                <form asp-action="UpdateGrade" method="post" class="d-flex">
+                                    <input type="hidden" name="courseId" value="@Model.Course.Id" />
+                                    <input type="hidden" name="studentId" value="@cs.StdId" />
+                                    <input type="number"
+                                           step="0.01"
+                                           name="grade"
+                                           value="@cs.Degree"
+                                           class="form-control"
+                                           style="width:100px;" />
+                                    <button type="submit" class="btn btn-success btn-sm ms-2">Save</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+
+

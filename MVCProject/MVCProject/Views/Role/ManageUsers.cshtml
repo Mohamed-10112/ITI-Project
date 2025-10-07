@@ -1,0 +1,119 @@
+﻿@model IEnumerable<MVCProject.Models.ApplicationUser>
+
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<MVCProject.Models.ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<div class="container mt-5 p-4 rounded-4 bg-white">
+    <h1 class="mb-4 text-center">Manage Users</h1>
+
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th class="text-start">Email</th>
+                    <th style="width: 200px;" class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    var roles = await UserManager.GetRolesAsync(user);
+                    <tr>
+                        <td class="text-start position-relative">
+                            <span style="display: inline-block; min-width: 250px;">
+                                @user.Email
+                            </span>
+                            @if (!roles.Any())
+                            {
+                                <i class="fas fa-clock text-warning"
+                                   title="Waiting for role"
+                                   style="position: absolute; left: 270px; top: 50%; transform: translateY(-50%);"></i>
+                            }
+                        </td>
+                        <td class="text-center">
+                            <a class="btn custom-details btn-sm"
+                               asp-action="AssignRole"
+                               asp-route-userId="@user.Id">
+                                Assign Role
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+<style>
+    body {
+        background-color: #f6f8fb;
+    }
+
+    h1 {
+        font-weight: 700;
+        background: linear-gradient(90deg, #001f3f, #0a3d91);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .container.mt-5 {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+        padding: 40px;
+        margin-top: 40px !important;
+    }
+
+    .table {
+        border-radius: 12px !important;
+        overflow: hidden;
+    }
+
+    .btn {
+        transition: all 0.2s ease-in-out;
+        border-radius: 8px !important;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+    }
+
+    .table tbody tr {
+        transition: none !important;
+    }
+
+    .table tbody tr:hover {
+        background-color: inherit !important;
+        transform: none !important;
+    }
+
+    th, td {
+        vertical-align: middle !important;
+    }
+
+    .custom-details {
+        background-color: #0a3d91;
+        color: #fff;
+        border: none;
+    }
+
+    .custom-details:hover {
+        background-color: #001f3f;
+        color: #fff;
+    }
+
+    .table td:first-child,
+    .table th:first-child {
+        padding-left: 50px;
+    }
+
+</style>
+
+

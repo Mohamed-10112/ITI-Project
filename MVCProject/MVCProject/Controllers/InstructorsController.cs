@@ -1,157 +1,202 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MVCProject.Models;
+using MVCProject.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MVCProject.Controllers
 {
     public class InstructorsController : Controller
     {
+        private readonly IInstructorRepository _instructorRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly AppDbContext _context;
 
-        public InstructorsController(AppDbContext context)
+        public InstructorsController(IInstructorRepository instructorRepository, UserManager<ApplicationUser> userManager, AppDbContext context)
         {
+            _instructorRepository = instructorRepository;
+            _userManager = userManager;
             _context = context;
         }
 
-        public IActionResult Index()
+
+        public IActionResult Index(string searchString)
         {
-            var appDbContext = _context.Instructors.Include(i => i.Course).Include(i => i.Department).ToList();
-            return View(appDbContext);
+            var instructors = string.IsNullOrEmpty(searchString)
+                ? _instructorRepository.GetAll()
+                : _instructorRepository.Search(searchString);
+
+            return View(instructors);
         }
 
         public IActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var instructor = _context.Instructors
-                .Include(i => i.Course)
-                .Include(i => i.Department)
-                .FirstOrDefault(m => m.Id == id);
-            if (instructor == null)
-            {
-                return NotFound();
-            }
+            var instructor = _instructorRepository.GetById(id.Value);
+            if (instructor == null) return NotFound();
 
             return View(instructor);
         }
 
         public IActionResult Create()
         {
-            ViewData["CrsId"] = new SelectList(_context.Courses, "Id", "Name");
-            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Name");
+            ViewData["CrsId"] = new SelectList(_instructorRepository.GetCourses(), "Id", "Name");
+            ViewData["DeptId"] = new SelectList(_instructorRepository.GetDepartments(), "Id", "Name");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,Name,Salary,Address,Image,DeptId,CrsId")] Instructor instructor)
+        public IActionResult Create(Instructor instructor)
         {
+            ModelState.Remove("Department");
+            ModelState.Remove("Course");
+
             if (ModelState.IsValid)
             {
-                _context.Add(instructor);
-                _context.SaveChanges();
+                _instructorRepository.Add(instructor);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CrsId"] = new SelectList(_context.Courses, "Id", "Name", instructor.CrsId);
-            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Name", instructor.DeptId);
+
+            ViewData["CrsId"] = new SelectList(_instructorRepository.GetCourses(), "Id", "Name", instructor.CrsId);
+            ViewData["DeptId"] = new SelectList(_instructorRepository.GetDepartments(), "Id", "Name", instructor.DeptId);
             return View(instructor);
         }
 
         public IActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var instructor = _context.Instructors.Find(id);
-            if (instructor == null)
-            {
-                return NotFound();
-            }
-            ViewData["CrsId"] = new SelectList(_context.Courses, "Id", "Name", instructor.CrsId);
-            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Name", instructor.DeptId);
+            var instructor = _instructorRepository.GetById(id.Value);
+            if (instructor == null) return NotFound();
+
+            ViewData["CrsId"] = new SelectList(_instructorRepository.GetCourses(), "Id", "Name", instructor.CrsId);
+            ViewData["DeptId"] = new SelectList(_instructorRepository.GetDepartments(), "Id", "Name", instructor.DeptId);
             return View(instructor);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,Name,Salary,Address,Image,DeptId,CrsId")] Instructor instructor)
+        public IActionResult Edit(int id, Instructor instructor)
         {
+            ModelState.Remove("Department");
+            ModelState.Remove("Course");
+            ModelState.Remove("User");
+
             if (id != instructor.Id)
-            {
                 return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(instructor);
-                    _context.SaveChanges();
+                    var instructorFromDb = _instructorRepository.GetById(id);
+                    if (instructorFromDb == null)
+                        return NotFound();
+
+                    instructor.UserId = instructorFromDb.UserId;
+
+                    instructorFromDb.Name = instructor.Name;
+                    instructorFromDb.Address = instructor.Address;
+                    instructorFromDb.Salary = instructor.Salary;
+                    instructorFromDb.DeptId = instructor.DeptId;
+                    instructorFromDb.CrsId = instructor.CrsId;
+                    instructorFromDb.Image = instructor.Image;
+
+                    _instructorRepository.Update(instructorFromDb);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!InstructorExists(instructor.Id))
-                    {
+                    if (_instructorRepository.GetById(instructor.Id) == null)
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CrsId"] = new SelectList(_context.Courses, "Id", "Name", instructor.CrsId);
-            ViewData["DeptId"] = new SelectList(_context.Departments, "Id", "Name", instructor.DeptId);
+
+            ViewData["CrsId"] = new SelectList(_instructorRepository.GetCourses(), "Id", "Name", instructor.CrsId);
+            ViewData["DeptId"] = new SelectList(_instructorRepository.GetDepartments(), "Id", "Name", instructor.DeptId);
             return View(instructor);
         }
 
+
         public IActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var instructor = _context.Instructors
-                .Include(i => i.Course)
-                .Include(i => i.Department)
-                .FirstOrDefault(m => m.Id == id);
-            if (instructor == null)
-            {
-                return NotFound();
-            }
+            var instructor = _instructorRepository.GetById(id.Value);
+            if (instructor == null) return NotFound();
 
             return View(instructor);
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var instructor = _context.Instructors.Find(id);
+            var instructor = _instructorRepository.GetById(id);
             if (instructor != null)
             {
-                _context.Instructors.Remove(instructor);
-                _context.SaveChanges();
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == instructor.UserId);
+                if (user != null)
+                {
+                    var roles = await _userManager.GetRolesAsync(user);
+                    foreach (var role in roles)
+                    {
+                        await _userManager.RemoveFromRoleAsync(user, role);
+                    }
+                }
+
+                _instructorRepository.Delete(id);
             }
 
             return RedirectToAction(nameof(Index));
         }
 
-        private bool InstructorExists(int id)
+        [Authorize(Roles = "Instructor")]
+        public async Task<IActionResult> MyCourse()
         {
-            return _context.Instructors.Any(e => e.Id == id);
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return RedirectToAction("Login", "Account");
+
+            var instructor = await _context.Instructors
+                .Include(i => i.Course)
+                    .ThenInclude(c => c.CourseStudents)
+                        .ThenInclude(cs => cs.Student)
+                            .ThenInclude(s => s.User)
+                .FirstOrDefaultAsync(i => i.UserId == user.Id);
+
+            if (instructor == null)
+                return NotFound("Instructor not found for this user.");
+
+            return View(instructor);
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Instructor")]
+        public async Task<IActionResult> UpdateGrade(int courseId, int studentId, int grade)
+        {
+            var courseStudent = await _context.CourseStudents
+                .FirstOrDefaultAsync(cs => cs.CrsId == courseId && cs.StdId == studentId);
+
+            if (courseStudent == null)
+                return NotFound();
+
+            courseStudent.Degree = grade;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("MyCourse");
+        }
+
+
     }
 }

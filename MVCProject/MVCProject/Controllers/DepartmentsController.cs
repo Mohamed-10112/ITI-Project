@@ -1,44 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MVCProject.Models;
+using MVCProject.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MVCProject.Controllers
 {
     public class DepartmentsController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IDepartmentRepository _departmentRepository;
 
-        public DepartmentsController(AppDbContext context)
+        public DepartmentsController(IDepartmentRepository departmentRepository)
         {
-            _context = context;
+            _departmentRepository = departmentRepository;
         }
-
+        [Authorize]
         public IActionResult Index(string searchString)
         {
-            var departments = _context.Departments.AsQueryable();
+            var departments = string.IsNullOrEmpty(searchString)
+                ? _departmentRepository.GetAll()
+                : _departmentRepository.Search(searchString);
 
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                departments = departments.Where(d =>
-                    d.Name.Contains(searchString) ||
-                    d.ManagerName.Contains(searchString));
-            }
-
-            return View(departments.ToList());
+            return View(departments);
         }
 
         public IActionResult Details(int id)
         {
-            var department = _context.Departments.Find(id);
-            if (department == null)
-            {
-                return NotFound();
-            }
+            var department = _departmentRepository.GetById(id);
+            if (department == null) return NotFound();
+
             return View(department);
         }
 
@@ -53,8 +48,7 @@ namespace MVCProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Departments.Add(department);
-                _context.SaveChanges();
+                _departmentRepository.Add(department);
                 return RedirectToAction("Index");
             }
             return View(department);
@@ -62,11 +56,9 @@ namespace MVCProject.Controllers
 
         public IActionResult Edit(int id)
         {
-            var department = _context.Departments.Find(id);
-            if (department == null)
-            {
-                return NotFound();
-            }
+            var department = _departmentRepository.GetById(id);
+            if (department == null) return NotFound();
+
             return View(department);
         }
 
@@ -74,15 +66,11 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Department department)
         {
-            if (id != department.Id)
-            {
-                return NotFound();
-            }
+            if (id != department.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
-                _context.Update(department);
-                _context.SaveChanges();
+                _departmentRepository.Update(department);
                 return RedirectToAction("Index");
             }
             return View(department);
@@ -90,11 +78,9 @@ namespace MVCProject.Controllers
 
         public IActionResult Delete(int id)
         {
-            var department = _context.Departments.Find(id);
-            if (department == null)
-            {
-                return NotFound();
-            }
+            var department = _departmentRepository.GetById(id);
+            if (department == null) return NotFound();
+
             return View(department);
         }
 
@@ -102,12 +88,7 @@ namespace MVCProject.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            var department = _context.Departments.Find(id);
-            if (department != null)
-            {
-                _context.Departments.Remove(department);
-                _context.SaveChanges();
-            }
+            _departmentRepository.Delete(id);
             return RedirectToAction("Index");
         }
     }

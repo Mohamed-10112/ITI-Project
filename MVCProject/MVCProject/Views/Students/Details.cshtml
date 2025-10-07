@@ -1,48 +1,32 @@
 ﻿@model MVCProject.Models.Student
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Student Details";
 }
 
-<h1>Details</h1>
+<div class="container mt-5">
+    <h2 class="mb-4">Student Details</h2>
+    <div class="card shadow p-4">
+        <div class="d-flex align-items-center">
+            <img src="~/images/students/@(string.IsNullOrEmpty(Model.Image) ? "default.jpg" : Model.Image)"
+                 alt="@Model.Name"
+                 width="120" height="120"
+                 class="rounded-circle me-4"
+                 style="object-fit: cover;" />
+            <div>
+                <h4>@Model.Name</h4>
+                <p><strong>Email:</strong> @Model.User?.Email</p>
+                <p><strong>Address:</strong> @Model.Address</p>
+                <p><strong>CGPA:</strong> @Model.Grade</p>
+                <p><strong>Department:</strong> @Model.Department?.Name</p>
+            </div>
+        </div>
+    </div>
 
-<div>
-    <h4>Student</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Grade)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Grade)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Department)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Department.Name)
-        </dd>
-    </dl>
+    <div class="mt-4 text-start">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning px-4 me-2">Edit</a>
+        <a asp-action="Index" class="btn btn-secondary px-4">Back to List</a>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+

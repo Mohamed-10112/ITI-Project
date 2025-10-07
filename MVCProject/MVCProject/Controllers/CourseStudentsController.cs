@@ -1,157 +1,143 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MVCProject.Models;
+using MVCProject.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MVCProject.Controllers
 {
     public class CourseStudentsController : Controller
     {
+        private readonly ICourseStudentsRepository _repository;
         private readonly AppDbContext _context;
 
-        public CourseStudentsController(AppDbContext context)
+        public CourseStudentsController(ICourseStudentsRepository repository, AppDbContext context)
         {
+            _repository = repository;
             _context = context;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string searchString)
         {
-            var appDbContext = _context.CourseStudents.Include(c => c.Course).Include(c => c.Student).ToList();
-            return View(appDbContext);
+            var list = string.IsNullOrEmpty(searchString)
+                ? _repository.GetAll()
+                : _repository.Search(searchString);
+
+            return View(list);
         }
 
         public IActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var courseStudents = _context.CourseStudents
-                .Include(c => c.Course)
-                .Include(c => c.Student)
-                .FirstOrDefault(m => m.Id == id);
-            if (courseStudents == null)
-            {
-                return NotFound();
-            }
+            var cs = _repository.GetById(id.Value);
+            if (cs == null) return NotFound();
 
-            return View(courseStudents);
+            return View(cs);
         }
 
         public IActionResult Create()
         {
-            ViewData["CrsId"] = new SelectList(_context.Courses, "Id", "Name");
-            ViewData["StdId"] = new SelectList(_context.Students, "Id", "Name");
+            ViewData["CrsId"] = new SelectList(_repository.GetCourses(), "Id", "Name");
+            ViewData["StdId"] = new SelectList(_repository.GetStudents(), "Id", "Name");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,Degree,CrsId,StdId")] CourseStudents courseStudents)
+        public IActionResult Create(CourseStudents courseStudents)
         {
+            ModelState.Remove("Course");
+            ModelState.Remove("Student");
+
             if (ModelState.IsValid)
             {
-                _context.Add(courseStudents);
-                _context.SaveChanges();
+                _repository.Add(courseStudents);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CrsId"] = new SelectList(_context.Courses, "Id", "Name", courseStudents.CrsId);
-            ViewData["StdId"] = new SelectList(_context.Students, "Id", "Name", courseStudents.StdId);
+
+            ViewData["CrsId"] = new SelectList(_repository.GetCourses(), "Id", "Name", courseStudents.CrsId);
+            ViewData["StdId"] = new SelectList(_repository.GetStudents(), "Id", "Name", courseStudents.StdId);
             return View(courseStudents);
         }
 
         public IActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var courseStudents = _context.CourseStudents.Find(id);
-            if (courseStudents == null)
-            {
-                return NotFound();
-            }
-            ViewData["CrsId"] = new SelectList(_context.Courses, "Id", "Name", courseStudents.CrsId);
-            ViewData["StdId"] = new SelectList(_context.Students, "Id", "Name", courseStudents.StdId);
-            return View(courseStudents);
+            var cs = _repository.GetById(id.Value);
+            if (cs == null) return NotFound();
+
+            ViewData["CrsId"] = new SelectList(_repository.GetCourses(), "Id", "Name", cs.CrsId);
+            ViewData["StdId"] = new SelectList(_repository.GetStudents(), "Id", "Name", cs.StdId);
+            return View(cs);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,Degree,CrsId,StdId")] CourseStudents courseStudents)
+        public IActionResult Edit(int id, CourseStudents courseStudents)
         {
-            if (id != courseStudents.Id)
-            {
-                return NotFound();
-            }
+            ModelState.Remove("Course");
+            ModelState.Remove("Student");
+
+            if (id != courseStudents.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(courseStudents);
-                    _context.SaveChanges();
+                    _repository.Update(courseStudents);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CourseStudentsExists(courseStudents.Id))
-                    {
+                    if (_repository.GetById(courseStudents.Id) == null)
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CrsId"] = new SelectList(_context.Courses, "Id", "Name", courseStudents.CrsId);
-            ViewData["StdId"] = new SelectList(_context.Students, "Id", "Name", courseStudents.StdId);
+
+            ViewData["CrsId"] = new SelectList(_repository.GetCourses(), "Id", "Name", courseStudents.CrsId);
+            ViewData["StdId"] = new SelectList(_repository.GetStudents(), "Id", "Name", courseStudents.StdId);
             return View(courseStudents);
         }
 
         public IActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var courseStudents = _context.CourseStudents
-                .Include(c => c.Course)
-                .Include(c => c.Student)
-                .FirstOrDefault(m => m.Id == id);
-            if (courseStudents == null)
-            {
-                return NotFound();
-            }
+            var cs = _repository.GetById(id.Value);
+            if (cs == null) return NotFound();
 
-            return View(courseStudents);
+            return View(cs);
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            var courseStudents = _context.CourseStudents.Find(id);
-            if (courseStudents != null)
-            {
-                _context.CourseStudents.Remove(courseStudents);
-                _context.SaveChanges();
-            }
+            _repository.Delete(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public IActionResult ToggleCompletion(int id)
+        {
+            var courseStudent = _context.CourseStudents.FirstOrDefault(cs => cs.Id == id);
+            if (courseStudent == null)
+                return NotFound();
+
+            courseStudent.IsCompleted = !courseStudent.IsCompleted;
+            _context.SaveChanges();
 
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CourseStudentsExists(int id)
-        {
-            return _context.CourseStudents.Any(e => e.Id == id);
-        }
     }
 }

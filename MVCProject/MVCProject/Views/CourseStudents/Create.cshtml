@@ -1,41 +1,62 @@
 ﻿@model MVCProject.Models.CourseStudents
-
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Course Student";
 }
 
-<h1>Create</h1>
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header custom-navbar text-white text-center py-3 rounded-top-4">
+            <h3 class="mb-0">Add Student to Course</h3>
+        </div>
 
-<h4>CourseStudents</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Degree" class="control-label"></label>
-                <input asp-for="Degree" class="form-control" />
-                <span asp-validation-for="Degree" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CrsId" class="control-label"></label>
-                <select asp-for="CrsId" class ="form-control" asp-items="ViewBag.CrsId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="StdId" class="control-label"></label>
-                <select asp-for="StdId" class ="form-control" asp-items="ViewBag.StdId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        <div class="card-body p-4">
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="alert alert-danger">
+                    <strong>Error:</strong> @ViewBag.ErrorMessage
+                </div>
+            }
+
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="Degree" class="form-label fw-semibold"></label>
+                        <input asp-for="Degree" class="form-control" placeholder="Enter student degree" />
+                        <span asp-validation-for="Degree" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="CrsId" class="form-label fw-semibold"></label>
+                        <select asp-for="CrsId" class="form-select" asp-items="ViewBag.CrsId">
+                            <option value="">-- Select Course --</option>
+                        </select>
+                        <span asp-validation-for="CrsId" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="StdId" class="form-label fw-semibold"></label>
+                        <select asp-for="StdId" class="form-select" asp-items="ViewBag.StdId">
+                            <option value="">-- Select Student --</option>
+                        </select>
+                        <span asp-validation-for="StdId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                        <i class="bi bi-arrow-left"></i> Back to List
+                    </a>
+                    <input type="submit" value="Create" class="btn btn-success px-4" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

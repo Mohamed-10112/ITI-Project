@@ -1,0 +1,20 @@
+﻿@model MVCProject.ViewModels.AssignRoleViewModel
+
+@{
+    ViewData["Title"] = "Assign Role";
+}
+
+<h2 class="text-center mb-4">Assign Role to @Model.UserEmail</h2>
+
+<form asp-action="AssignRole" method="post">
+    <input type="hidden" asp-for="UserId" />
+
+    <div class="form-group mb-3">
+        <label asp-for="SelectedRole" class="form-label"></label>
+        <select asp-for="SelectedRole" class="form-control" asp-items="@(new SelectList(Model.Roles))"></select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a asp-action="ManageUsers" class="btn btn-secondary">Back</a>
+</form>
+

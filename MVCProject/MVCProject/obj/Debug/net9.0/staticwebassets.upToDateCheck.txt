@@ -1,5 +1,11 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\Home\H1.jpeg
+wwwroot\images\Home\H2.jpeg
+wwwroot\images\Home\H3.png
+wwwroot\images\Home\H4.png
+wwwroot\images\Home\H5.png
+wwwroot\images\Home\on.png
 wwwroot\images\students\6485bc43-3023-4372-9baf-bfb55ace56fa.jpg
 wwwroot\images\students\a3cad076-f78a-47b7-bc5e-ac535ecd93ba.jpg
 wwwroot\images\students\af474b26-2d51-4c73-9812-a27485d89744.jpg
@@ -66,6 +72,7 @@ wwwroot\lib\jquery\dist\jquery.slim.js
 wwwroot\lib\jquery\dist\jquery.slim.min.js
 wwwroot\lib\jquery\dist\jquery.slim.min.map
 wwwroot\lib\jquery\LICENSE.txt
+D:\All_Projects\ITI-Project\MVCProject\MVCProject\wwwroot\lib\jquery\LICENSE.txt
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\wwwroot\css\site.css
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\wwwroot\favicon.ico
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\wwwroot\js\site.js
@@ -127,4 +134,3 @@ D:\All_Projects\ITI-Project\MVCProject\MVCProject\wwwroot\lib\jquery\dist\jquery
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\wwwroot\lib\jquery\dist\jquery.slim.js
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\wwwroot\lib\jquery\dist\jquery.slim.min.js
 D:\All_Projects\ITI-Project\MVCProject\MVCProject\wwwroot\lib\jquery\dist\jquery.slim.min.map
-D:\All_Projects\ITI-Project\MVCProject\MVCProject\wwwroot\lib\jquery\LICENSE.txt

@@ -1,0 +1,241 @@
+﻿@model MVCProject.ViewModels.RegisterUserViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<style>
+    html, body {
+        overflow: hidden;
+        height: 100%;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background: url('/images/Home/H5.png') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    footer {
+        display: none !important;
+    }
+
+    .register-background {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* padding: 40px 20px; */
+    }
+
+    .registration-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .registration-card {
+        background: #fff;
+        border-radius: 20px;
+        padding: 20px 90px;
+        max-width: 900px;
+        width: 100%;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        position: relative;
+        z-index: 2;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: none;
+        border: none;
+        font-size: 28px;
+        color: #1a2332;
+        cursor: pointer;
+        line-height: 1;
+    }
+
+    .registration-title {
+        color: #001f3f;
+        font-size: 28px;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+    }
+
+    .form-group-custom {
+        margin-bottom: 5px;
+        position: relative;
+    }
+
+    .form-label-custom {
+        color: black;
+        font-size: 15px;
+        margin-bottom: 2px;
+        display: block;
+    }
+
+    .form-label-custom::before {
+        content: "* ";
+        color: black;
+    }
+
+    .form-control-custom {
+        width: 100%;
+        padding: 7px 0;
+        background: transparent;
+        border: none;
+        border-bottom: 2px solid rgba(100, 100, 100, 0.5);
+        color: black;
+        font-size: 15px;
+        transition: border-color 0.3s;
+    }
+
+    .form-control-custom:focus {
+        outline: none;
+        border-bottom-color: black;
+    }
+
+    .form-control-custom::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .password-wrapper {
+        position: relative;
+    }
+
+    .checkbox-container {
+        display: flex;
+        align-items: flex-start;
+        margin: 15px 0;
+    }
+
+    .checkbox-custom {
+        width: 20px;
+        height: 20px;
+        margin-right: 12px;
+        cursor: pointer;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .checkbox-label {
+        color: #1a2332;
+        font-size: 12px;
+        line-height: 1.4;
+        cursor: pointer;
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 14px;
+        background: #001f3f;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        margin-top: 5px;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .signin-link {
+        text-align: center;
+        margin-top: 15px;
+        color: black;
+        font-size: 13px;
+    }
+
+    .signin-link a {
+        color: #1a2332;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .signin-link a:hover {
+        text-decoration: underline;
+    }
+
+    .text-danger {
+        color: red !important;
+        font-size: 12px;
+        display: block;
+        min-height: 1px;
+        margin-top: 0px;
+    }
+
+</style>
+
+<div class="register-background">
+    <div class="registration-container">
+        <div class="registration-card">
+            <button type="button" class="close-btn" onclick="window.history.back()">&times;</button>
+
+            <h2 class="registration-title">· Registration Form ·</h2>
+
+            <form asp-action="SaveRegister" method="post">
+                <div class="form-group-custom">
+                    <label asp-for="FirstName" class="form-label-custom">First Name</label>
+                    <input asp-for="FirstName" class="form-control-custom" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group-custom">
+                    <label asp-for="LastName" class="form-label-custom">Last Name</label>
+                    <input asp-for="LastName" class="form-control-custom" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group-custom">
+                    <label asp-for="Email" class="form-label-custom">Email address</label>
+                    <input asp-for="Email" class="form-control-custom" type="email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group-custom">
+                    <label asp-for="Password" class="form-label-custom">Password</label>
+                    <div class="password-wrapper">
+                        <input asp-for="Password" class="form-control-custom" type="password" id="password" />
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-group-custom">
+                    <label asp-for="ConfirmPassword" class="form-label-custom">Confirm Password</label>
+                    <div class="password-wrapper">
+                        <input asp-for="ConfirmPassword" class="form-control-custom" type="password" id="confirmPassword" />
+                    </div>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div class="checkbox-container">
+                    <input type="checkbox" id="rememberMe" name="rememberMe" class="checkbox-custom" />
+                    <label for="rememberMe" class="checkbox-label">
+                        I agree to the terms and conditions and privacy policy
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-submit">CREATE ACCOUNT</button>
+
+                <div class="signin-link">
+                    Already have an account? <a asp-controller="Account" asp-action="Login">Sign in</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
